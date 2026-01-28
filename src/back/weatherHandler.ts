@@ -1,14 +1,12 @@
-const URL_BASE: string = "http://api.weatherapi.com/v1";
-const CURRENT_WEATHER_ENDPOINT: string = "/current.json";
-const API_KEY = import.meta.env.VITE_WTR_API_KEY;
-
 import type { WeatherData } from "../types/weather";
+import { getBaseEndpointWeatherURL } from "./utils/weatherAPIUtils";
+import { endpoints } from "../types/constants";
 
-export async function getCurrentWeatherOnCity(userCity: string) {
-    const reqCity = encodeURIComponent(userCity);
+export async function getCurrentWeatherOnCity(city: string) {
+    const url = getBaseEndpointWeatherURL(endpoints.CURRENT_WEATHER);
+    url.searchParams.append("q", city);
 
     try {
-        const url = URL_BASE + CURRENT_WEATHER_ENDPOINT + "?key=" + API_KEY + "&q=" + reqCity;
         const response = await fetch(url);
 
         if (response.ok) {
