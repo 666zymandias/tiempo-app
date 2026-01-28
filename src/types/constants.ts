@@ -7,5 +7,8 @@ export const endpoints = {
     CURRENT_WEATHER: "current.json",
 }
 
-export const ACTUAL_WEATHER: number = 1;
+//MACROS 4 FETCHS
+export const momentWeather = {
+    CURRENT_WEATHER: 1
+}
 
