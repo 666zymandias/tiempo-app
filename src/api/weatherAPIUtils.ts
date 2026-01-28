@@ -1,4 +1,4 @@
-import { URL_BASE, LANG } from "../../types/constants"
+import { URL_BASE, LANG } from "../types/constants"
 const API_KEY = import.meta.env.VITE_WTR_API_KEY;
 
 export function getBaseEndpointWeatherURL(endpoint: string): URL {

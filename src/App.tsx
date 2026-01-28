@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { getCurrentWeatherOnCity } from "../back/weatherHandler.ts";
-import { momentWeather } from "../types/constants.ts";
+import { getCurrentWeatherOnCity } from "./api/weatherHandler.ts";
+import { momentWeather } from "./types/constants.ts";
 
-import type { WeatherData } from "../types/weather";
+import type { WeatherData } from "./types/weather";
 
 function App() {
 

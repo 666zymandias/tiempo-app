@@ -1,5 +1,5 @@
 import type { WeatherData } from "../types/weather";
-import { getBaseEndpointWeatherURL } from "./utils/weatherAPIUtils";
+import { getBaseEndpointWeatherURL } from "./weatherAPIUtils";
 import { endpoints } from "../types/constants";
 
 export async function getCurrentWeatherOnCity(city: string) {
