@@ -2,7 +2,7 @@
 ## Herramientas
 - **Ecosistema:** React
 - **Motor:** Vite
-- **Lenguaje:** TypeScript (JS con tipado)
+- **Lenguaje:** TypeScript
 - **Estilos:** Framework TailwindCSS
 - **Peticiones:** TanStack Query
 - **API:** WeatherAPI
