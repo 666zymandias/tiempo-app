@@ -1,30 +1,47 @@
 import React, { useState } from "react";
-import { getCurrentWeatherOnCity } from "./api/weatherHandler.ts";
-import { momentWeather } from "./types/constants.ts";
+import { getCurrentWeatherOnCity, getTimeZoneOnCity } from "./api/weatherHandler.ts";
+import { Requests } from "./types/constants.ts";
 
 import type { WeatherData } from "./types/weather";
+import type { TimeZone } from "./types/timezone";
 
 function App() {
 
+  const [ timeZone, setTimeZone ] = useState<TimeZone | null>(null)
   const [ city, setCity ] = useState("");
   const [ weather, setWeather ] = useState<WeatherData | null>(null);
 
   const handleSearch = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (city) {
-      await fetchWeather(momentWeather.CURRENT_WEATHER, city);
+      await fetchWeather(Requests.CURRENT_WEATHER, city);
     }
   }
 
   async function fetchWeather(weatherType: number, city: string) {
 
-    if (weatherType === momentWeather.CURRENT_WEATHER) {
-      const request = await getCurrentWeatherOnCity(city);
+    setTimeZone(null);
+    setWeather(null);
 
-      if (request.status === 200) {
-        setWeather(request.data);
-      }
+    const weatherReqs = [];
+    const timeZoneReq = getTimeZoneOnCity(city);
+    weatherReqs.push(timeZoneReq);
+
+    if (weatherType === Requests.CURRENT_WEATHER) {
+      const currentWeatherReq = getCurrentWeatherOnCity(city);
+      weatherReqs.push(currentWeatherReq);
     }
+
+    const WeatherResps = await Promise.all(weatherReqs);
+
+    WeatherResps.forEach(element => {
+      if (element.status === 200 && element.response_type === Requests.TIME_ZONE) {
+        setTimeZone(element.data as TimeZone);
+      }
+      else if (element.status === 200 && element.response_type === Requests.CURRENT_WEATHER) {
+        setWeather(element.data as WeatherData);
+      }
+    });
 
   }
 
@@ -67,16 +84,24 @@ function App() {
 
       {weather && (
         <article 
-          id="city-temperature" 
+          id="city-info" 
           className="flex justify-center items-center w-150 gap-10">
           
           <div>
+
             <h2 className='text-gray-250 font-bold'>
               {weather.location.name}
             </h2>
             <p>
               {weather.location.region}, {weather.location.country}
             </p>
+
+            {timeZone && (
+              <p>
+                Son las {timeZone.time_day} del {timeZone.date}
+              </p>
+            )}
+            
           </div>
 
           <div>
